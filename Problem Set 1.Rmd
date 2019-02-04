@@ -1,0 +1,269 @@
+---
+title: "Problem Set 1"
+author: "Justin Suksengdow"
+date: "January 17, 2019"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(data.table)
+library(ggplot2)
+library(knitr)
+```
+
+# Question 1:
+You are given the following information on 12 individuals' years of education and yearly income.
+
+```{r Q1}
+dt <- data.table(Education = c(10, 18, 12, 16, 16, 20, 21, 13, 9, 11, 6, 13),
+                 Income = c(12, 56, 23, 60, 41, 89, 111, 39, 19, 25, 18, 46))
+```
+
+
+a. Find the average and median level of years of education and yearly income. What difference do you notice between the median and average levels?
+
+```{r Q1a}
+avg_education <- mean(dt$Education)
+avg_income <- mean(dt$Income)
+median_education <- median(dt$Education)
+median_income <- median(dt$Income)
+```
+
+Average Education = `r avg_education`  
+Average Income = `r avg_income`   
+Median Eduation = `r median_education`  
+Median income = `r median_income`  
+
+
+b. Plot yearly income vs. years of education. Does the relationship look linear?
+
+```{r, Q1b}
+plot_Q1b <- ggplot2::ggplot(dt, aes(x=Education, y=Income)) + geom_point()
+plot(plot_Q1b)
+```
+
+This does not looks roughly linear.
+
+c. Draw a line through the cluster of points you think best represents the actual relationship.
+
+```{r, Q1c}
+Q1c <- plot_Q1b + geom_segment(aes(x = 9, xend = 21, y = 12, yend= 83))
+plot(Q1c)
+```
+
+d. Calculate the covariance of the correlation coefficient of years of education and yearly income.
+
+```{r Q1d}
+cov_income_education <- round(cov(dt$Income, dt$Education),3)
+cor_income_education <- round(cor(dt$Income, dt$Education),3)
+```
+
+
+The covariance between income and education is `r cov_income_education`
+The correlation between income and education is `r cor_income_education`
+
+
+e.  Suppose yearly income is measured in \$10,000 instead of \$1,000 (hint: multiply each yearly income by ten). Calculate the covariance and the correlation coefficient of years of education and yearly income now.
+
+```{r Q1e}
+dt$Income_x_10 <- 10*dt$Income
+cov_income_x_10_education <- round(cov(dt$Income_x_10, dt$Education),3)
+cor_income_x_10_education <- round(cor(dt$Income_x_10, dt$Education),3)
+```
+
+The covariance between 10xincome and education is `r cov_income_x_10_education`
+The correlation between 10xincome and education is `r cor_income_x_10_education`
+
+f.  What do the findings from e. say about using covariance as a measure of association compared to the correlation coefficient?
+
+Covariance is subject to scale effects while correlation is not.
+
+
+# Question 3:
+ You own a business that sells cheat sheets. 
+ 
+(a) Plot out this relationship.
+
+``` {r Q3a}
+# creates data table
+dt.test <- data.table(hours = c(1:150))
+dt.test$cheatsheets <- 1 + 2 * sqrt(dt.test$hours)
+# plots the data table
+plot_q3a <- ggplot2::ggplot(dt.test, aes(x = hours, y = cheatsheets)) + geom_point() 
+plot(plot_q3a)
+```
+
+b. What is your marginal product?
+
+``` {r Q3b}
+
+
+
+```
+
+The marginal product is 1 / hours ^ 2
+
+c. Suppose your true production function was linear instead. What would your marginal product be. What is the difference between your marginal product when you have a linear production function versus a square root production function?
+
+``` {r Q3c}
+
+```
+
+A linear production function would have a constant marginal product whereas a square root production function's marginal product contains a variable.  
+
+d. Which one seem 'economically' more reasonable? What does this suggest about representing
+every relationship in this class linearly?
+
+``` {r Q3d}
+
+```
+
+A production function with a square root is more economically reasonable because its scale changes based on the size of the dependent variable. The marginal product would not be the same for one input of input versus 10,000, which is what a linear production function suggests.
+
+# Question 4:
+
+A random variable X is defined to be the difference between the higher value and the lower value when
+two dice are thrown. If they have the same value, X is defined to be zero.
+
+a. Is a X discrete or continuous random variable?
+
+``` {r Q4a}
+
+
+
+```
+
+X is a discrete variable.
+
+b. Find the probability density and cumulative distribution for the random variable.
+
+``` {r Q4b}
+
+```
+
+c. What do the cdf and pdf look like if X is defined to be the larger of the two values when the dice are thrown or the value of either one when they roll up the same?
+
+``` {r Q4c} 
+
+```
+
+d. Find the expected value of X in (a) and (c).
+
+``` {r Q4d} 
+
+```
+
+# Question 6
+
+``` {r Q6}
+gpa <- matrix(c(12, 3, 3, 6, 9, 6, 2, 21, 7), ncol = 3, byrow = T)
+rownames(gpa) <- c("2.0", "3.0", "4.0")
+colnames(gpa) <- c("2.0", "3.0", "4.0")
+gpa <- cbind(gpa,rowSums(gpa))
+gpa <- rbind(gpa,colSums(gpa))
+gpa
+
+```
+a. Convert the above table into one giving the joint probability distribution.
+
+``` {r Q6a}
+gpa1 <- gpa / gpa[4,4]
+gpa1 <- round(gpa / 69, 3)
+gpa1
+
+```
+b. Compute p(College GPA = 2.0 | High School GPA = 2.0), p(College GPA = 2.0 | High School GPA = 3.0), p(College GPA = 2.0 | High School GPA = 4.0)
+
+``` {r Q6b}
+
+six.b1 <- round(gpa1[1,1] * 100, 2)
+six.b2 <- round(gpa1[1,2] * 100, 2)
+six.b3 <- round(gpa1[1,3] * 100, 2)
+
+
+```
+
+The probability that the College GPA will be 2.0 given that the High School GPA is 2.0 is `r six.b1`%  
+The probability that the College GPA will be 2.0 given that the High School GPA is 3.0 is `r six.b2`%  
+The probability that the College GPA will be 2.0 given that the High School GPA is 4.0 is `r six.b3`%  
+
+c. Compute E(College GPA | High School GPA = 2.0), E(College GPA | High School GPA = 3.0), E(College GPa | High School GPA = 4.0)
+
+``` {r Q6c}
+six.c1 <- round((2 * gpa[1,1] + 3 * gpa[2,1] + 4 * gpa[3,1]) / gpa[4,1], 2)
+six.c2 <- round((2 * gpa[1,2] + 3 * gpa[2,2] + 4 * gpa[3,2]) / gpa[4,2], 2)
+six.c3 <- round((2 * gpa[1,3] + 3 * gpa[2,3] + 4 * gpa[3,3]) / gpa[4,3], 2)
+
+
+```
+
+Given that High school GPA = 2.0, College GPA is expected to be `r six.c1`  
+Given that High school GPA = 3.0, College GPA is expected to be `r six.c2`  
+Given that High school GPA = 4.0, College GPA is expected to be `r six.c3`  
+
+d. Plot the conditional expectation of College GPA versus High School GPA
+
+``` {r Q6d}
+# assign x and y values to variable
+six.d.xvals <- c(2:4)
+six.d.yvals <- c(six.c1,six.c2,six.c3)
+
+# create data table with named x and y vals
+dt6d <- data.table(HS.GPA = six.d.xvals, Exp.College.GPA = six.d.yvals)
+
+# plots data
+plot_Q6d <- ggplot2::ggplot(dt6d, aes(x = HS.GPA, y = Exp.College.GPA)) + geom_point() + geom_line()
+plot(plot_Q6d)
+```
+
+e. Do the expectations in part (c) agree with *priori* expectations about the relationship between high school and college performance? How do those that receive a 4.0 in high school perform in college? Should this result be surprising?
+
+``` {r Q6e}
+good.student.prcnt <- gpa[3,3] / gpa[4,3] * 100
+ok.student.prcnt <- gpa[2,3] / gpa[4,3] * 100 
+bad.student.prcnt <- gpa[1,3] / gpa[4,3] * 100
+
+```
+
+Students with a 4.0 in high school tend to keep up their grades.  
+  
+`r good.student.prcnt`% of the High School students with a 4.0 performed just as well in college.  
+`r ok.student.prcnt`% of the students performed just below their level in high school.  
+`r bad.student.prcnt`% of the students had grades that declined significantly.  
+
+The conditional expectations found in part (c) partly align with a *priori* expectation of the high school-college performance relationship. When looking at the graph, a large increase in GPA is seen between the 2.0 and 3.0 high school GPA. However, there is a decrease in expected GPA when going from 3.0 to 4.0.  
+
+This could be inaccurate based on the sample size of students. The students picked for the survey could be outliers that did not do as well in college. If the sample size were to increase, the data might tell a different story.  
+
+The drop in GPA could be explained by the different environment that students are placed into. The college experience is much different from high school, so, assuming the data is accurate, the drop in GPA is not surprising.
+
+# Question 7
+
+Is unbiasedness a necessary or sufficient condition (or neither) for consistency of an estimator?  
+
+Unbiasedness is a sufficient condition for consistency. Just because an estimator is unbiased does not mean it is automatically consistent.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
